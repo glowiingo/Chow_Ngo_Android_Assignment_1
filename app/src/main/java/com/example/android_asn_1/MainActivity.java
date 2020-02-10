@@ -13,14 +13,17 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {   private static final String TAG = MainActivity.class.getName();
     private Button btnRequest;
 
     private RequestQueue mRequestQueue;
-    private StringRequest mStringRequest;
+    private JsonObjectRequest mJsonRequest;
     private String url = "";
 
     @Override
@@ -47,13 +50,12 @@ public class MainActivity extends AppCompatActivity {   private static final Str
         mRequestQueue = Volley.newRequestQueue(this);
 
         //String Request initialized
-        mStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        JsonObjectRequest mJsonRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String response) {
-
+            public void onResponse(JSONObject response) {
                 Toast.makeText(getApplicationContext(),"Response :" + response.toString(), Toast.LENGTH_LONG).show();//display the response on screen
-
             }
+
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity {   private static final Str
             }
         });
 
-        mRequestQueue.add(mStringRequest);
+        mRequestQueue.add(mJsonRequest);
     }
 
     public void queryInput(View view) {
