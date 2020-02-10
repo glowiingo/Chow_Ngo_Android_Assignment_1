@@ -17,6 +17,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {   private static final String TAG = MainActivity.class.getName();
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {   private static final Str
 
     private RequestQueue mRequestQueue;
     private JsonObjectRequest mJsonRequest;
+    private JSONObject newsResponse;
+    private JSONArray articleList;
     private String url = "";
 
     @Override
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity {   private static final Str
         JsonObjectRequest mJsonRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                newsResponse = response;
                 Toast.makeText(getApplicationContext(),"Response :" + response.toString(), Toast.LENGTH_LONG).show();//display the response on screen
             }
 
@@ -76,6 +81,18 @@ public class MainActivity extends AppCompatActivity {   private static final Str
     public String generateURL (String query) {
         return "https://newsapi.org/v2/everything?q=" + query
                 + "&sortBy=publishedAt&apiKey=789a4eb72dd04d369213df40d906db11";
+    }
+
+
+    public void populatePage() {
+        try {
+            articleList = newsResponse.getJSONArray("articles");
+            for (int i = 0; i < articleList.length(); i++) {
+                JSONObject article = articleList.getJSONObject(i);
+            }
+        } catch (JSONException e) {
+            Log.e("Article Conversion: ", e.toString());
+        }
     }
 
 
