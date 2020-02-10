@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         // Access the RequestQueue through your singleton class.
 
+
+
     }
 
     void makeAPICall () {
