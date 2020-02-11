@@ -57,9 +57,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 newsResponse = response;
-                Toast.makeText(getApplicationContext(), "Response :" + response.toString(), Toast.LENGTH_LONG).show();//display the response on screen
-
-                Toast.makeText(getApplicationContext(),"Response :" + response.toString(), Toast.LENGTH_LONG).show();//display the response on screen
+                Toast.makeText(getApplicationContext(), "Response :" + response.toString(), Toast.LENGTH_LONG).show();
+                //display the response on screen
+                Toast.makeText(getApplicationContext(),"Response :" + response.toString(), Toast.LENGTH_LONG).show();
+                //display the response on screen
                 Intent intentSuggestions = new Intent(MainActivity.this, Suggestions.class);
                 intentSuggestions.putExtra("jsonString", newsResponse.toString());
                 startActivity(intentSuggestions);
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String generateURL (String query, String date) {
         return "https://newsapi.org/v2/everything?q=" + query
-                + "&sortBy=publishedAt&apiKey=789a4eb72dd04d369213df40d906db11";
+                + "&from=" + date + "&apiKey=789a4eb72dd04d369213df40d906db11";
     }
 
 
