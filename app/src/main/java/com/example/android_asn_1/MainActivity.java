@@ -21,7 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {   private static final String TAG = MainActivity.class.getName();
+public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getName();
     private Button btnRequest;
 
     private RequestQueue mRequestQueue;
@@ -36,12 +37,11 @@ public class MainActivity extends AppCompatActivity {   private static final Str
         setContentView(R.layout.activity_main);
 
 
-
         btnRequest = (Button) findViewById(R.id.button);
 
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 queryInput(v);
                 sendAndRequestResponse();
             }
@@ -58,14 +58,15 @@ public class MainActivity extends AppCompatActivity {   private static final Str
             @Override
             public void onResponse(JSONObject response) {
                 newsResponse = response;
-                Toast.makeText(getApplicationContext(),"Response :" + response.toString(), Toast.LENGTH_LONG).show();//display the response on screen
+                Toast.makeText(getApplicationContext(), "Response :" + response.toString(), Toast.LENGTH_LONG).show();//display the response on screen
+
             }
 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.i(TAG,"Error :" + error.toString());
+                Log.i(TAG, "Error :" + error.toString());
             }
         });
 
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity {   private static final Str
         url = generateURL(inputTextString);
     }
 
-    public String generateURL (String query) {
+    public String generateURL(String query) {
         return "https://newsapi.org/v2/everything?q=" + query
                 + "&sortBy=publishedAt&apiKey=789a4eb72dd04d369213df40d906db11";
     }
@@ -95,6 +96,14 @@ public class MainActivity extends AppCompatActivity {   private static final Str
         }
     }
 
+    public void filterDate(){
+        try{
+            articleList = newsResponse.getJSONArray("articles");
+        } catch (JSONException e) {
+            Log.e("No Articles: ", e.toString());
+        }
 
+
+    }
 
 }
