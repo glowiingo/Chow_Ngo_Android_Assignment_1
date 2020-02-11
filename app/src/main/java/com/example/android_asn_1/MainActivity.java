@@ -2,6 +2,7 @@ package com.example.android_asn_1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue mRequestQueue;
     private JsonObjectRequest mJsonRequest;
     private JSONObject newsResponse;
-    private JSONArray articleList;
     private String url = "";
 
     @Override
@@ -60,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
                 newsResponse = response;
                 Toast.makeText(getApplicationContext(), "Response :" + response.toString(), Toast.LENGTH_LONG).show();//display the response on screen
 
+                Toast.makeText(getApplicationContext(),"Response :" + response.toString(), Toast.LENGTH_LONG).show();//display the response on screen
+                Intent intentSuggestions = new Intent(MainActivity.this, Suggestions.class);
+                intentSuggestions.putExtra("jsonString", newsResponse.toString());
+                startActivity(intentSuggestions);
             }
 
         }, new Response.ErrorListener() {
@@ -76,34 +80,17 @@ public class MainActivity extends AppCompatActivity {
     public void queryInput(View view) {
         EditText inputText = (EditText) findViewById(R.id.inputText);
         String inputTextString = inputText.getText().toString();
-        url = generateURL(inputTextString);
+        // Input function to get date string in format: YYYY-MM-DD
+        String date = "";
+        url = generateURL(inputTextString, date);
     }
 
-    public String generateURL(String query) {
+    public String generateURL (String query, String date) {
         return "https://newsapi.org/v2/everything?q=" + query
                 + "&sortBy=publishedAt&apiKey=789a4eb72dd04d369213df40d906db11";
     }
 
 
-    public void populatePage() {
-        try {
-            articleList = newsResponse.getJSONArray("articles");
-            for (int i = 0; i < articleList.length(); i++) {
-                JSONObject article = articleList.getJSONObject(i);
-            }
-        } catch (JSONException e) {
-            Log.e("Article Conversion: ", e.toString());
-        }
-    }
 
-    public void filterDate(){
-        try{
-            articleList = newsResponse.getJSONArray("articles");
-        } catch (JSONException e) {
-            Log.e("No Articles: ", e.toString());
-        }
-
-
-    }
 
 }
