@@ -38,6 +38,11 @@ public class Suggestions extends AppCompatActivity {
         try {
             articleList = jsonNewsResponse.getJSONArray("articles");
             int length = articleList.length();
+            // TODO: Update list to JSONObject list and pass each object's information into ListView.
+            //  This needs to be formatted. We should be showing only the titles.
+            //  The rest should be passed into the next activity.
+            //  Question?: Should we pass the JSONObject into the next activity as a string
+            //  Then parse in the next activity?
             List<String> test = new ArrayList<String>(length);
             for (int i = 0; i < articleList.length(); i++) {
                 JSONObject article = articleList.getJSONObject(i);
