@@ -25,7 +25,6 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
     private Button btnRequest;
-
     private RequestQueue mRequestQueue;
     private JsonObjectRequest mJsonRequest;
     private JSONObject newsResponse;
@@ -35,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         btnRequest = (Button) findViewById(R.id.button);
 
         btnRequest.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         mRequestQueue = Volley.newRequestQueue(this);
 
         //String Request initialized
+        // TODO: We need to update this back to String request
+        //  as a string is being passed to the next activity
         JsonObjectRequest mJsonRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     public void queryInput(View view) {
         EditText inputText = (EditText) findViewById(R.id.inputText);
         String inputTextString = inputText.getText().toString();
-        // Input function to get date string in format: YYYY-MM-DD
+        // TODO: Input function to get date string in format: YYYY-MM-DD
         String date = "";
         url = generateURL(inputTextString, date);
     }
