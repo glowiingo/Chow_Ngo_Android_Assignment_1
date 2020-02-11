@@ -22,6 +22,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
     private Button btnRequest;
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 newsResponse = response;
                 Toast.makeText(getApplicationContext(), "Response :" + response.toString(), Toast.LENGTH_LONG).show();
                 //display the response on screen
-                Toast.makeText(getApplicationContext(),"Response :" + response.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Response :" + response.toString(), Toast.LENGTH_LONG).show();
                 //display the response on screen
                 Intent intentSuggestions = new Intent(MainActivity.this, Suggestions.class);
                 intentSuggestions.putExtra("jsonString", newsResponse.toString());
@@ -81,16 +85,30 @@ public class MainActivity extends AppCompatActivity {
         EditText inputText = (EditText) findViewById(R.id.inputText);
         String inputTextString = inputText.getText().toString();
         // TODO: Input function to get date string in format: YYYY-MM-DD
-        String date = "";
+        String date = getWeekAgo();
         url = generateURL(inputTextString, date);
     }
 
-    public String generateURL (String query, String date) {
-        return "https://newsapi.org/v2/everything?q=" + query
-                + "&from=" + date + "&apiKey=789a4eb72dd04d369213df40d906db11";
+    public String getCurrentDate() {
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return simpleDateFormat.format(date);
+    }
+
+    public String getWeekAgo() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, -7);
+        Date date = calendar.getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return simpleDateFormat.format(date);
     }
 
 
+    public String generateURL(String query, String date) {
+        return "https://newsapi.org/v2/everything?q=" + query
+                + "&from=" + date + "&apiKey=789a4eb72dd04d369213df40d906db11";
+    }
 
 
 }
