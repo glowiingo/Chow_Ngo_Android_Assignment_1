@@ -25,20 +25,18 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
-    private Button btnRequest;
-    private RequestQueue mRequestQueue;
-    private JsonObjectRequest mJsonRequest;
-    private JSONObject newsResponse;
+    private String newsResponse;
     private String url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnRequest = (Button) findViewById(R.id.button);
+        Button btnRequest = (Button) findViewById(R.id.button);
 
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,18 +50,14 @@ public class MainActivity extends AppCompatActivity {
     private void sendAndRequestResponse() {
 
         //RequestQueue initialized
-        mRequestQueue = Volley.newRequestQueue(this);
+        RequestQueue mRequestQueue = Volley.newRequestQueue(this);
 
         //String Request initialized
-        // TODO: We need to update this back to String request
-        //  as a string is being passed to the next activity
-        JsonObjectRequest mJsonRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        StringRequest mJsonRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(String response) {
                 newsResponse = response;
-                Toast.makeText(getApplicationContext(), "Response :" + response.toString(), Toast.LENGTH_LONG).show();
-                //display the response on screen
-                Toast.makeText(getApplicationContext(), "Response :" + response.toString(), Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(), "Response :" + response.toString(), Toast.LENGTH_LONG).show();
                 //display the response on screen
                 Intent intentSuggestions = new Intent(MainActivity.this, Suggestions.class);
                 intentSuggestions.putExtra("jsonString", newsResponse.toString());
@@ -84,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     public void queryInput(View view) {
         EditText inputText = (EditText) findViewById(R.id.inputText);
         String inputTextString = inputText.getText().toString();
-        // TODO: Input function to get date string in format: YYYY-MM-DD
+        inputTextString = inputTextString.replace(" ", "%20");
         String date = getWeekAgo();
         url = generateURL(inputTextString, date);
     }
@@ -92,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     public String getCurrentDate() {
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
         return simpleDateFormat.format(date);
     }
 
@@ -100,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, -7);
         Date date = calendar.getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
         return simpleDateFormat.format(date);
     }
 
