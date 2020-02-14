@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +30,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
-    private String newsResponse;
+    private JSONObject newsResponse;
     private String url = "";
 
     @Override
@@ -53,11 +54,11 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
 
         //String Request initialized
-        StringRequest mJsonRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        JsonObjectRequest mJsonRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String response) {
+            public void onResponse(JSONObject response) {
                 newsResponse = response;
-                // Toast.makeText(getApplicationContext(), "Response :" + response.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Response :" + response.toString(), Toast.LENGTH_LONG).show();
                 //display the response on screen
                 Intent intentSuggestions = new Intent(MainActivity.this, Suggestions.class);
                 intentSuggestions.putExtra("jsonString", newsResponse.toString());
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "Error :" + error.toString());
             }
         });
-
         mRequestQueue.add(mJsonRequest);
     }
 

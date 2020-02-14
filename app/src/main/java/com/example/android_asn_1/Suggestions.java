@@ -2,10 +2,14 @@ package com.example.android_asn_1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,14 +20,16 @@ import java.util.List;
 
 public class Suggestions extends AppCompatActivity {
 
-    private String newsResponse = "";
+    // private String newsResponse = "";
     private JSONObject jsonNewsResponse;
-    private JSONArray articleList;
+    private int listLength = 0;
+    // private JSONArray articleList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suggestions);
+        String newsResponse = "";
         newsResponse = (String) getIntent().getExtras().get("jsonString");
         try {
             jsonNewsResponse = new JSONObject(newsResponse);
@@ -31,25 +37,35 @@ public class Suggestions extends AppCompatActivity {
             Log.e("Error", e.toString());
         }
         populatePage();
+
+        ListView articleList = findViewById(R.id.articleList);
+        final String response = newsResponse;
+        articleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
+                if (i >= 0 && i < listLength) {
+                    Intent intentDetails = new Intent(Suggestions.this, Details.class);
+                    intentDetails.putExtra("jsonString", response);
+                    intentDetails.putExtra("index", i);
+                    startActivity(intentDetails);
+                }
+            }
+        });
+
     }
 
 
     public void populatePage() {
         try {
-            articleList = jsonNewsResponse.getJSONArray("articles");
-            int length = articleList.length();
-            // TODO: Update list to JSONObject list and pass each object's information into ListView.
-            //  This needs to be formatted. We should be showing only the titles.
-            //  The rest should be passed into the next activity.
-            //  Question?: Should we pass the JSONObject into the next activity as a string
-            //  Then parse in the next activity?
-            List<String> test = new ArrayList<String>(length);
-            for (int i = 0; i < articleList.length(); i++) {
-                JSONObject article = articleList.getJSONObject(i);
-                test.add(article.toString());
+            JSONArray articleJsonArray = jsonNewsResponse.getJSONArray("articles");
+            listLength = articleJsonArray.length();
+            List<String> test = new ArrayList<>(listLength);
+            for (int i = 0; i < articleJsonArray.length(); i++) {
+                JSONObject article = articleJsonArray.getJSONObject(i);
+                test.add(article.getString("title"));
             }
-            ListView suggestions = (ListView) findViewById(R.id.articleList);
-            suggestions.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, test));
+            ListView suggestions = findViewById(R.id.articleList);
+            suggestions.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, test));
         } catch (JSONException e) {
             Log.e("Article Conversion: ", e.toString());
         }
