@@ -65,7 +65,7 @@ public class Suggestions extends AppCompatActivity {
                 test.add(article.getString("title"));
             }
             ListView suggestions = findViewById(R.id.articleList);
-            suggestions.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, test));
+            suggestions.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, test));
         } catch (JSONException e) {
             Log.e("Article Conversion: ", e.toString());
         }

@@ -26,7 +26,6 @@ import java.util.List;
 public class Details extends AppCompatActivity {
     private JSONObject jsonNewsResponse;
     private int indexArticle;
-    private JSONObject jsonArticle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +57,29 @@ public class Details extends AppCompatActivity {
 
         try {
             JSONArray articleJsonArray = jsonNewsResponse.getJSONArray("articles");
-            jsonArticle = articleJsonArray.getJSONObject(indexArticle);
+            JSONObject jsonArticle = articleJsonArray.getJSONObject(indexArticle);
             imageStringUrl = jsonArticle.getString("urlToImage");
-            title.setText(jsonArticle.getString("title"));
-            author.setText(jsonArticle.getString("author"));
-            description.setText(jsonArticle.getString("description"));
-            content.setText(jsonArticle.getString("content"));
-            published.setText(jsonArticle.getString("publishedAt"));
-            url.setText(jsonArticle.getString("url"));
-            source.setText(jsonArticle.getJSONObject("source").getString("name"));
+            String stringTitle = this.getResources().getString(R.string.title) + " "
+                    + jsonArticle.getString("title");
+            title.setText(stringTitle);
+            String stringAuthor = this.getResources().getString(R.string.author)
+                    + jsonArticle.getString("author");
+            author.setText(stringAuthor);
+            String stringDesc = this.getResources().getString(R.string.description)
+                    + jsonArticle.getString("description");
+            description.setText(stringDesc);
+            String stringContent = this.getResources().getString(R.string.content)
+                    + jsonArticle.getString("content");
+            content.setText(stringContent);
+            String stringPublished = this.getResources().getString(R.string.published)
+                    + jsonArticle.getString("publishedAt");
+            published.setText(stringPublished);
+            String stringUrl = this.getResources().getString(R.string.url)
+                    + jsonArticle.getString("url");
+            url.setText(stringUrl);
+            String stringSource = this.getResources().getString(R.string.source)
+                    + jsonArticle.getJSONObject("source").getString("name");
+            source.setText(stringSource);
         } catch (JSONException e) {
             Log.e("Article Conversion: ", e.toString());
         }
@@ -79,7 +92,7 @@ public class Details extends AppCompatActivity {
             }, 0, 0, null, null,
             new Response.ErrorListener() {
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("", "");
+                    Log.e("", "There was an issue processing the image.");
                 }
             });
         mRequestQueue.add(request);
