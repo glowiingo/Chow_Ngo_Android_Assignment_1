@@ -59,13 +59,13 @@ public class Suggestions extends AppCompatActivity {
         try {
             JSONArray articleJsonArray = jsonNewsResponse.getJSONArray("articles");
             listLength = articleJsonArray.length();
-            List<String> test = new ArrayList<>(listLength);
+            List<String> articleTitleList = new ArrayList<>(listLength);
             for (int i = 0; i < articleJsonArray.length(); i++) {
                 JSONObject article = articleJsonArray.getJSONObject(i);
-                test.add(article.getString("title"));
+                articleTitleList.add(article.getString("title"));
             }
             ListView suggestions = findViewById(R.id.articleList);
-            suggestions.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, test));
+            suggestions.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, articleTitleList));
         } catch (JSONException e) {
             Log.e("Article Conversion: ", e.toString());
         }
