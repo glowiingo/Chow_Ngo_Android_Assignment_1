@@ -8,4 +8,11 @@
     <string name="source">Source:&#160;</string>
     <string name="published">Published at:&#160;</string>
     <string name="url">Url:&#160;</string>
+    <string name="replace_space">%20</string>
+    <string name="news_api_https">https://newsapi.org/v2/everything?q=</string>
+    <string name="from_query">&amp;from=</string>
+    <string name="api_query">&amp;apiKey=789a4eb72dd04d369213df40d906db11</string>
+    <string name="gloria">Gloria Ngo</string>
+    <string name="flemming">Flemming Chow</string>
+    <string name="search_news">Search News!</string>
 </resources>

@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     public void queryInput(View view) {
         EditText inputText = (EditText) findViewById(R.id.inputText);
         String inputTextString = inputText.getText().toString();
-        inputTextString = inputTextString.replace(" ", "%20");
+        inputTextString = inputTextString.replace(" ", this.getResources().getString(R.string.replace_space));
         String date = getWeekAgo();
         url = generateURL(inputTextString, date);
     }
@@ -94,8 +94,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public String generateURL(String query, String date) {
-        return "https://newsapi.org/v2/everything?q=" + query
-                + "&from=" + date + "&apiKey=789a4eb72dd04d369213df40d906db11";
+        return this.getResources().getString(R.string.news_api_https) + query
+                + this.getResources().getString(R.string.from_query) + date
+                + this.getResources().getString(R.string.api_query);
     }
 
 
